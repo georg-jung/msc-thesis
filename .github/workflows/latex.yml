@@ -37,7 +37,9 @@ jobs:
       if: failure()
       with:
         name: log
-        path: "src/${{ env.FILENAME }}.*"
+        path: |
+          src/${{ env.FILENAME }}.*
+          !**/*.tex
         if-no-files-found: error
         retention-days: 7
     - name: Upload PDF file
