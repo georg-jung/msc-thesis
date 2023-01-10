@@ -1,0 +1,26 @@
+name: Build LaTeX document
+
+on:
+  push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+    - uses: dotnet/nbgv@v0.4
+      id: nbgv
+    - name: Compile LaTeX document
+      uses: xu-cheng/latex-action@v2
+      with:
+        root_file: src/DEMO-TUDaThesis.tex
+        latexmk_use_lualatex: true
+    - name: Upload PDF file
+      uses: actions/upload-artifact@v3
+      with:
+        name: pdf
+        path: src/DEMO-TUDaThesis.pdf
