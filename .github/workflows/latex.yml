@@ -48,3 +48,5 @@ jobs:
         name: pdf
         path: src/${{ env.FILENAME }}.pdf
         if-no-files-found: error
+    - name: Validate PDF/A conformity
+      run: ./validate-pdfa.sh src/${{ env.FILENAME }}.pdf
