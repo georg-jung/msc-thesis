@@ -14,6 +14,15 @@ jobs:
         fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
     - uses: dotnet/nbgv@v0.4
       id: nbgv
+    - name: Download tuda_logo.pdf
+      run: |
+        curl -H "Authorization: token $TOKEN" \
+          -H 'Accept: application/vnd.github.v3.raw' \
+          --fail-with-body \
+          -o ./tuda_logo.pdf \
+          -L https://api.github.com/repos/georg-jung/tuda-logo/contents/tuda_logo.pdf?ref=master
+      env: 
+        TOKEN: ${{ secrets.TUDA_LOGO_FINEGRAINEDACCESSTOKEN }} 
     - name: Compile LaTeX document
       uses: xu-cheng/latex-action@v2
       with:
