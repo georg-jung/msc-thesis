@@ -3,6 +3,9 @@ name: Build LaTeX document
 on:
   push
 
+env:
+  FILENAME: DEMO-TUDaThesis
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,17 +22,27 @@ jobs:
         curl -H "Authorization: token $TOKEN" \
           -H 'Accept: application/vnd.github.v3.raw' \
           --fail-with-body \
-          -o ./tuda_logo.pdf \
+          -o ./src/tuda_logo.pdf \
           -L https://api.github.com/repos/georg-jung/tuda-logo/contents/tuda_logo.pdf?ref=master
-      env: 
-        TOKEN: ${{ secrets.TUDA_LOGO_FINEGRAINEDACCESSTOKEN }} 
+      env:
+        TOKEN: ${{ secrets.TUDA_LOGO_FINEGRAINEDACCESSTOKEN }}
     - name: Compile LaTeX document
       uses: xu-cheng/latex-action@v2
       with:
-        root_file: src/DEMO-TUDaThesis.tex
+        root_file: src/${{ env.FILENAME }}.tex
+        working_directory: src/
         latexmk_use_lualatex: true
+    - name: Upload logs
+      uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: log
+        path: "src/${{ env.FILENAME }}.*"
+        if-no-files-found: error
+        retention-days: 7
     - name: Upload PDF file
       uses: actions/upload-artifact@v3
       with:
         name: pdf
-        path: src/DEMO-TUDaThesis.pdf
+        path: src/${{ env.FILENAME }}.pdf
+        if-no-files-found: error
