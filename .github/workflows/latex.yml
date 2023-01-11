@@ -26,8 +26,6 @@ jobs:
           -L https://api.github.com/repos/georg-jung/tuda-logo/contents/tuda_logo.pdf?ref=master
       env:
         TOKEN: ${{ secrets.TUDA_LOGO_FINEGRAINEDACCESSTOKEN }}
-    # this is used for pdf metadata
-    - run: echo '${{ steps.nbgv.outputs.AssemblyInformationalVersion }}' >src/version-identifier.txt
     - name: Compile LaTeX document
       uses: xu-cheng/latex-action@v2
       with:
