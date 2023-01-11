@@ -50,8 +50,8 @@ jobs:
           -GitVersion="${{ steps.nbgv.outputs.AssemblyInformationalVersion }}" \
           -GitCommit="${{ steps.nbgv.outputs.GitCommitId }}" \
           src/${{ env.FILENAME }}.pdf
-    - name: '[qpdf] Linearize pdf'
-      run: qpdf src/${{ env.FILENAME }}.pdf --linearize --replace-input
+    #- name: '[qpdf] Linearize pdf'
+    #  run: qpdf src/${{ env.FILENAME }}.pdf --linearize --replace-input
     - name: Upload PDF file
       uses: actions/upload-artifact@v3
       with:
