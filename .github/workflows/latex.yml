@@ -42,14 +42,15 @@ jobs:
           !**/*.tex
         if-no-files-found: error
         retention-days: 7
-    - name: Install exiftool & qpdf
-      run: sudo apt-get install -y libimage-exiftool-perl qpdf
+    - name: Install exiftool # & qpdf
+      run: sudo apt-get install -y libimage-exiftool-perl # qpdf
     - name: '[exiftool] Add git version properties'
       run: |
         exiftool -config exiftool.cfg -overwrite_original \
           -GitVersion="${{ steps.nbgv.outputs.AssemblyInformationalVersion }}" \
           -GitCommit="${{ steps.nbgv.outputs.GitCommitId }}" \
           src/${{ env.FILENAME }}.pdf
+    # Linearization with qpdf breaks pdf/a validity
     #- name: '[qpdf] Linearize pdf'
     #  run: qpdf src/${{ env.FILENAME }}.pdf --linearize --replace-input
     - name: Upload PDF file
