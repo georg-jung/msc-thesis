@@ -67,8 +67,8 @@ jobs:
     container: pandoc/latex:latest
     steps:
     - uses: actions/checkout@v3
-    - run: pandoc --self-contained src/${{ env.FILENAME }}.tex -o ${{ env.FILENAME }}.docx
-    - run: pandoc --template=pandoc-htmltemplate.html5 --self-contained src/${{ env.FILENAME }}.tex -o ${{ env.FILENAME }}.html
+    - run: pandoc --embed-resources --standalone src/${{ env.FILENAME }}.tex -o ${{ env.FILENAME }}.docx
+    - run: pandoc --embed-resources --standalone --template=pandoc-htmltemplate.html5 src/${{ env.FILENAME }}.tex -o ${{ env.FILENAME }}.html
     - name: Upload docx
       uses: actions/upload-artifact@v3
       with:
