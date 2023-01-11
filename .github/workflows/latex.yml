@@ -52,3 +52,20 @@ jobs:
         if-no-files-found: error
     - name: Validate PDF/A conformity
       run: ./validate-pdfa.sh src/${{ env.FILENAME }}.pdf
+
+
+  convert:
+    runs-on: ubuntu-latest
+    container: pandoc/latex:latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: pandoc --self-contained src/${{ env.FILENAME }}.tex -o ${{ env.FILENAME }}.docx
+    - run: pandoc --template=pandoc-htmltemplate.html5 --self-contained src/${{ env.FILENAME }}.tex -o ${{ env.FILENAME }}.html
+    - name: Upload docx
+      uses: actions/upload-artifact@v3
+      with:
+        name: docx + html
+        path: |
+          ${{ env.FILENAME }}.docx
+          ${{ env.FILENAME }}.html
+        if-no-files-found: error
